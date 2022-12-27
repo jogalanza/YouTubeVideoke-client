@@ -1,0 +1,3 @@
+@echo off
+rmdir "../PettyCashTracker-server/clientapp/dist"
+xcopy "dist" "../PettyCashTracker-server/clientapp/dist" /y /e /d

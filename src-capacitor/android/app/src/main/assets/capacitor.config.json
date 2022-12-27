@@ -1,0 +1,10 @@
+{
+  "appId": "com.jogalanza.pettycash",
+  "appName": "Petty Cash",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www",
+  "server": {
+    "url": "http://192.168.1.4:8080"
+  }
+}

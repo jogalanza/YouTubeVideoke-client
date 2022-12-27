@@ -1,0 +1,1 @@
+(function(){void 0===window.pettycash&&(window.pettycash={}),window.pettycash.serverAddress="https://localhost:44300/",window.pettycash.wss="wss://localhost:44300//ws.ashx",window.pettycash.locale="EN",window.pettycash.to="30m",window.pettycash.sessionInterval=30})();
