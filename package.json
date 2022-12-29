@@ -12,6 +12,7 @@
     "serve": "quasar dev",
     "build": "quasar build --mode pwa",
     "build-prd": "cross-env APP_ENV=VideokeTube quasar build",
+    "build-git": "cross-env APP_ENV=YouTubeVideoke-client quasar build --mode pwa",
     "build-electron": "quasar build --mode electron",
     "build-pwa": "quasar build --mode pwa",
     "cap-android": "quasar dev -m capacitor -T android"

@@ -56,8 +56,8 @@ module.exports = configure(function (ctx) {
           ? ""
           : process.env.NODE_ENV === "production"
           ? process.env.APP_ENV
-            ? `/${process.env.APP_ENV}/clientapp/dist/pwa`
-            : "/clientapp/dist/pwa"
+            ? `/${process.env.APP_ENV}/dist/pwa`
+            : "/dist/pwa"
           : "/",
 
       // Add dependencies for transpiling with Babel (Array of string/regex)
