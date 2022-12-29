@@ -104,9 +104,9 @@ export default defineComponent({
       }
     };
 
-    const StateChanged = (p, p2) => {
+    const StateChanged = (p) => {
       console.warn("video ended", p, p2);
-      if (p2 === 0 && mainStore.Playlist.length > 0) {
+      if (p.data === 0 && mainStore.Playlist.length > 0) {
         //TODO: load next song
         mainStore.PlayNext();
       }
