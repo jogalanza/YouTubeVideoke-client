@@ -1,10 +1,5 @@
 const routes = [
   {
-    path: "/",
-    name: "Home",
-    component: () => import("pages/Home.vue"),
-  },
-  {
     path: "/terms-and-conditions",
     name: "TermsConditions",
     component: () => import("pages/TermsConditions.vue"),
@@ -16,10 +11,15 @@ const routes = [
   },
 
   {
-    path: "/main",
+    path: "/",
     name: "Main",
     component: () => import("layouts/MainLayout.vue"),
     children: [
+      {
+        path: "/home",
+        name: "Home",
+        component: () => import("pages/Dashboard.vue"),
+      },
       {
         path: "/dashboard",
         name: "Dashboard",

@@ -1,13 +1,13 @@
 <template>
   <q-layout
     :class="`app-main-layout ${mobileView ? 'mobile-view' : ''}`"
-    view="hHh lpR fFf"
+    view="hHr lpR fFr"
     style="background: #0e0c0c"
   >
     <!-- lHh Lpr lFf -->
     <q-header class="app-header dark q-py-sm">
       <q-toolbar>
-        <q-btn
+        <!-- <q-btn
           v-if="q.screen.width < 1014"
           flat
           dense
@@ -17,7 +17,7 @@
           size="md"
           class="toggle-main-drawer"
           color="white"
-        />
+        /> -->
 
         <q-toolbar-title class="app-title" style="overflow: inherit">
           <!-- <q-img
@@ -34,7 +34,7 @@
             class="q-mr-sm"
           /> -->
           <span class="text-white" style="font-size: 1.4em; line-height: 1.5em"
-            >PettyCash</span
+            >VideokeTube</span
           >
         </q-toolbar-title>
         <q-space v-if="mobileView" />
@@ -64,24 +64,39 @@
         <q-btn
           round
           flat
-          icon="o_notifications"
+          icon="o_skip_next"
+          size="md"
+          class="app-btn"
+          @click="mainStore.PlayNext"
+          color="white"
+        >
+          <q-tooltip>Play Next</q-tooltip>
+        </q-btn>
+
+        <q-btn
+          round
+          flat
+          icon="o_search"
+          size="md"
+          class="app-btn"
+          @click="ShowRightDrawerItem(1)"
+          color="white"
+        >
+          <q-tooltip>Search</q-tooltip>
+        </q-btn>
+        <q-btn
+          round
+          flat
+          icon="o_queue_music"
           size="md"
           class="app-btn"
           @click="ShowRightDrawerItem(2)"
           color="white"
         >
-          <q-tooltip>Notifications</q-tooltip>
-          <!-- <q-badge
-            v-if="notifs.count > 0"
-            color="red"
-            floating
-            transparent
-            rounded
-          >
-            {{ notifs.count }}
-          </q-badge> -->
+          <q-tooltip>Song Queue</q-tooltip>
         </q-btn>
-        <q-btn
+
+        <!-- <q-btn
           v-if="!mobileView"
           round
           flat
@@ -92,48 +107,7 @@
           color="white"
         >
           <q-tooltip>Switch Theme</q-tooltip>
-        </q-btn>
-
-        <!-- <q-avatar size="32px" class="q-ml-sm">
-          <img
-            v-if="user.ActiveUser.Photo"
-            :src="`data:image/png;base64,${user.ActiveUser.Photo}`"
-          />
-          <q-icon v-else name="o_person" color="white" size="24px" />
-          <q-popup-proxy v-if="user.ActiveUser" style="max-width: 100%">
-            <q-card style="width: 430px">
-              <q-card-section class="q-pa-sm">
-                <q-list>
-                  <q-item>
-                    <q-item-section avatar>
-                      <q-avatar size="88px">
-                        <img
-                          v-if="user.ActiveUser.Photo"
-                          :src="`data:image/png;base64,${user.ActiveUser.Photo}`"
-                        />
-                      </q-avatar>
-                    </q-item-section>
-                    <q-item-section top>
-                      <q-item-label class="text-h6 text-bold">{{
-                        user.ActiveUser.DisplayName
-                      }}</q-item-label>
-                      <q-item-label caption>{{
-                        user.ActiveUser.Email
-                      }}</q-item-label>
-                      <q-item-label caption>{{
-                        user.ActiveUser.Title
-                      }}</q-item-label>
-
-                      <q-item-label caption
-                        >Reports to: {{ user.ActiveUser.Manager }}</q-item-label
-                      >
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </q-card-section>
-            </q-card>
-          </q-popup-proxy>
-        </q-avatar> -->
+        </q-btn> -->
       </q-toolbar>
     </q-header>
 
@@ -142,6 +116,7 @@
       show-if-above
       :mini="true"
       class="app-drawer"
+      v-if="false"
     >
       <q-list
         class="q-px-none q-pt-sm"
@@ -355,16 +330,25 @@
 
     <q-drawer
       v-model="rightDrawerOpen"
-      :breakpoint="50000"
-      :width="q.screen.width < 400 ? q.screen.width : 400"
+      :breakpoint="0"
+      :width="q.screen.width < 450 ? q.screen.width : 450"
       class="app-drawer-right"
       side="right"
+      behavior="desktop"
     >
-      <!-- <Notifications
-        v-if="rightDrawerItem === 2"
-        @close="rightDrawerOpen = false"
-        backicon="o_close"
-      /> -->
+      <keep-alive>
+        <YTSearch
+          v-if="rightDrawerItem === 1"
+          @close="rightDrawerOpen = false"
+        />
+      </keep-alive>
+
+      <keep-alive>
+        <PlayList
+          v-if="rightDrawerItem === 2"
+          @close="rightDrawerOpen = false"
+        />
+      </keep-alive>
     </q-drawer>
 
     <q-page-container
@@ -373,11 +357,6 @@
     >
       <router-view></router-view>
     </q-page-container>
-    <!-- <MessageDialog
-      ref="offlineNotif"
-      msg="SAP is currently offline. All confirmation records will be posted to SAP once status becomes online again."
-      icon="r_cloud_off"
-    /> -->
 
     <q-dialog
       v-model="mainStore.Installable"
@@ -481,6 +460,7 @@ import {
   provide,
   inject,
   onBeforeUnmount,
+  defineAsyncComponent,
 } from "vue";
 import { useQuasar, Cookies } from "quasar";
 
@@ -497,9 +477,12 @@ export default {
     // MessageDialog: defineAsyncComponent(() =>
     //   import("../components/General/MessageDialog.vue")
     // ),
-    // Notifications: defineAsyncComponent(() =>
-    //   import("../components/General/Notifications.vue")
-    // ),
+    YTSearch: defineAsyncComponent(() =>
+      import("../components/General/YTSearch.vue")
+    ),
+    PlayList: defineAsyncComponent(() =>
+      import("../components/General/PlayList.vue")
+    ),
   },
   setup() {
     const eventBus = inject("eventBus");
@@ -628,14 +611,6 @@ export default {
       rightDrawerOpen.value = true;
     };
 
-    const EvalUserUpdate = (data) => {
-      if (user.ActiveUser && user.ActiveUser.ID !== undefined) {
-        if (user.ActiveUser.ID === data) {
-          CheckAuth();
-        }
-      }
-    };
-
     onMounted(async () => {
       console.warn(route);
 
@@ -643,28 +618,8 @@ export default {
       // eventBus.$on("hub-update-user", EvalUserUpdate);
       // eventBus.$on("ws-update-user", user.GetCurrentUser);
 
-      var x = UseLightTheme();
+      var x = false; // UseLightTheme();
       q.dark.set(!x);
-
-      setTimeout(() => {
-        CheckAuth();
-      }, 100);
-
-      await mainStore.GetSnapshotYears();
-
-      if (
-        route.query &&
-        route.query.snapmonth !== undefined &&
-        route.query.snapyear !== undefined
-      ) {
-        Cookies.remove("_finxrdr");
-        mainStore.SyncSnapshot({
-          Enabled: true,
-          Month: parseInt(route.query.snapmonth),
-          Year: parseInt(route.query.snapyear),
-        });
-        navigateTo({ name: "Home" });
-      }
     });
 
     onBeforeUnmount(() => {

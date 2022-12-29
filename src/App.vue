@@ -183,20 +183,7 @@ export default {
       user.GetUserDashboards();
     };
 
-    const InitDashboardFilter = () => {
-      console.warn("InitDashboardFilter", mainStore.DashboardFilter);
-      var x = { ...mainStore.DashboardFilter };
-      if (x.Year === null) {
-        x.Year = new Date().getFullYear();
-      }
-
-      mainStore.SyncDashboardFilter(x);
-    };
-
     onMounted(() => {
-      //options.LoadOptions();
-      InitDashboardFilter();
-
       eventBus.$on("hub-connected", HubConnectOK);
       eventBus.$on("hub-app-notif", HandleNewNotifs);
       eventBus.$on("hub-update-dashboards", UpdateDashboardList);

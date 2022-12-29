@@ -3,10 +3,10 @@
     <template v-slot:header>
       <q-toolbar class="q-pa-md">
         <q-toolbar-title class="text-bold text-h4 clip"
-          >#PettyCash</q-toolbar-title
+          >VideokeTube</q-toolbar-title
         >
         <q-space />
-        <q-btn
+        <!-- <q-btn
           label="Sign Up"
           class="q-mr-sm"
           no-caps
@@ -25,7 +25,7 @@
           style="font-weight: bold"
           rounded
           padding="sm lg"
-        />
+        /> -->
       </q-toolbar>
     </template>
 
@@ -50,9 +50,9 @@
 
     <q-card-section class="section-footer row justify-between">
       <div class="text-grey-5" style="line-height: 2.5em">
-        Copyright &copy; 2022 PettyCash. All Rights Reserved.
+        Copyright &copy; 2022 VideokeTube. All Rights Reserved.
       </div>
-      <div class="text-grey-5">
+      <!-- <div class="text-grey-5">
         <q-btn
           label="Privacy Policy"
           flat
@@ -71,7 +71,7 @@
           no-caps
           to="terms-and-conditions"
         />
-      </div>
+      </div> -->
     </q-card-section>
   </BoardLayout>
 </template>
@@ -83,12 +83,12 @@
   max-height: 100vh;
 
   .q-toolbar {
-    background: #297bfa !important;
+    background: #ff0000 !important;
     color: white !important;
   }
 
   .section-1 {
-    background: #297bfa;
+    background: #ff0000;
     color: white;
     height: calc(100vh - 72px);
   }

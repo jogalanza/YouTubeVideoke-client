@@ -47,13 +47,13 @@ import quasarUserOptions from './quasar-user-options.js'
 
 
 
-console.info('[Quasar] Running CAPACITOR.')
 
 
 
+const publicPath = `/VideokeTube/clientapp/dist/pwa/`
 
-
-const publicPath = ``
+const doubleSlashRE = /\/\//
+const addPublicPath = url => (publicPath + url).replace(doubleSlashRE, '/')
 
 
 async function start ({
@@ -66,7 +66,7 @@ async function start ({
   
   let hasRedirected = false
   const getRedirectUrl = url => {
-    try { return router.resolve(url).href }
+    try { return addPublicPath(router.resolve(url).href) }
     catch (err) {}
 
     return Object(url) === url
@@ -163,9 +163,7 @@ createQuasarApp(createApp, quasarUserOptions)
       
       import(/* webpackMode: "eager" */ 'boot/axios'),
       
-      import(/* webpackMode: "eager" */ 'boot/eventBus'),
-      
-      import(/* webpackMode: "eager" */ 'boot/hub')
+      import(/* webpackMode: "eager" */ 'boot/eventBus')
       
     ]).then(bootFiles => {
       const boot = mapFn(bootFiles).filter(entry => typeof entry === 'function')

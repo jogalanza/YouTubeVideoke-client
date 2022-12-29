@@ -23,7 +23,7 @@ module.exports = configure(function (ctx) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-webpack/boot-files
-    boot: ["i18n", "axios", "eventBus", "hub"],
+    boot: ["i18n", "axios", "eventBus"],
 
     // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-css
     css: ["app.scss"],
@@ -155,12 +155,12 @@ module.exports = configure(function (ctx) {
       },
 
       manifest: {
-        name: `Petty Cash`,
-        short_name: `Petty Cash`,
-        description: `Personal Finance Tool`,
+        name: `VideokeTube`,
+        short_name: `VideokeTube`,
+        description: `Keep Calm and Sing Along`,
         display: "standalone",
         orientation: "portrait",
-        background_color: "#ffffff",
+        background_color: "#ff0000",
         theme_color: "#027be3",
         icons: [
           {
