@@ -8,7 +8,11 @@
       </q-toolbar> -->
     </template>
 
-    <q-card-section v-if="uri" class="q-pa-none" style="height: calc(100vh)">
+    <q-card-section
+      v-if="videoId !== null"
+      class="q-pa-none"
+      style="height: calc(100vh)"
+    >
       <YouTube
         class="youtube-player"
         ref="player"
@@ -129,6 +133,7 @@ export default defineComponent({
       console.warn("dashboard mounted", player.value);
     });
     return {
+      videoId,
       uri,
       mainStore,
       player,

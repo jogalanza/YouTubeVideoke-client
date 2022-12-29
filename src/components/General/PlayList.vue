@@ -39,7 +39,7 @@
               icon="o_close"
               unelevated
               color="red"
-              @click="mainStore.AddToPlaylist(item)"
+              @click="mainStore.RemoveFromPlaylist(index)"
             >
               <q-tooltip>Remove</q-tooltip>
             </q-btn>

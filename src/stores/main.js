@@ -50,6 +50,9 @@ export const useMainStore = defineStore("main", {
       this.playlist.push({ ...payload });
       console.warn(this.playlist);
     },
+    RemoveFromPlaylist(payload) {
+      this.playlist.splice(payload, 1);
+    },
     PlayNext() {
       console.warn("playnext", this, this.playlist);
       try {
