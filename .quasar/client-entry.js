@@ -43,24 +43,17 @@ import createQuasarApp from './app.js'
 import quasarUserOptions from './quasar-user-options.js'
 
 
-import 'app/src-pwa/register-service-worker'
+
+
+
+
+console.info('[Quasar] Running SPA.')
 
 
 
 
 
-
-
-// Needed only for iOS PWAs
-if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream && window.navigator.standalone) {
-  import(/* webpackChunkName: "fastclick"  */ '@quasar/fastclick')
-}
-
-
-const publicPath = `/YouTubeVideoke-client/dist/pwa/`
-
-const doubleSlashRE = /\/\//
-const addPublicPath = url => (publicPath + url).replace(doubleSlashRE, '/')
+const publicPath = `/`
 
 
 async function start ({
@@ -73,7 +66,7 @@ async function start ({
   
   let hasRedirected = false
   const getRedirectUrl = url => {
-    try { return addPublicPath(router.resolve(url).href) }
+    try { return router.resolve(url).href }
     catch (err) {}
 
     return Object(url) === url

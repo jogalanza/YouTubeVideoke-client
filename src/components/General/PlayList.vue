@@ -20,18 +20,20 @@
       >
         <q-item :key="index" dense class="q-px-none">
           <q-item-section avatar>
-            <q-img
+            <!-- <q-img
               :src="item.snippet.thumbnails.medium.url"
               :width="item.snippet.thumbnails.medium.width"
               :height="item.snippet.thumbnails.medium.height"
               style="width: 140px"
-            ></q-img>
+            ></q-img> -->
+
+            <q-img :src="item.video.thumbnail_src" style="width: 140px"></q-img>
           </q-item-section>
           <q-item-section>
             <q-item-label>
-              #{{ index + 1 }} - {{ item.snippet.title }}
+              #{{ index + 1 }} - {{ item.video.title }}
             </q-item-label>
-            <q-item-label caption>{{ item.snippet.channelTitle }}</q-item-label>
+            <q-item-label caption>{{ item.uploader.username }}</q-item-label>
           </q-item-section>
           <q-item-section side>
             <q-btn

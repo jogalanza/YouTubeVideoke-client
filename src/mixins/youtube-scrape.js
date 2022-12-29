@@ -226,49 +226,91 @@ export function useYoutubeScrape() {
 
         request
           .get(url, {
-            withCredentials: true,
+            withCredentials: false,
           })
-          .then((response, p2) => {
-            console.warn("yutube get", response, p2);
+          .then((response) => {
+            console.warn("yutube get", response);
+            if (response.status === 200) {
+              var html = response.data;
+
+              json["parser"] = "json_format";
+              json["key"] = html.match(/"innertubeApiKey":"([^"]*)/)[1];
+
+              // Get script json data from html to parse
+              let data,
+                sectionLists = [];
+              try {
+                let match = html.match(
+                  /ytInitialData[^{]*(.*?);\s*<\/script>/s
+                );
+                if (match && match.length > 1) {
+                  json["parser"] += ".object_var";
+                } else {
+                  json["parser"] += ".original";
+                  match = html.match(
+                    /ytInitialData"[^{]*(.*);\s*window\["ytInitialPlayerResponse"\]/s
+                  );
+                }
+                data = JSON.parse(match[1]);
+                json["estimatedResults"] = data.estimatedResults || "0";
+                sectionLists =
+                  data.contents.twoColumnSearchResultsRenderer.primaryContents
+                    .sectionListRenderer.contents;
+              } catch (ex) {
+                console.error("Failed to parse data:", ex);
+                console.log(data);
+              }
+
+              // Loop through all objects and parse data according to type
+              parseJsonFormat(sectionLists, json);
+
+              return resolve(json);
+            }
+
+            resolve({ error: response.statusText });
+          })
+          .catch((e) => {
+            console.warn("err", e);
+            resolve({ error: e });
           });
 
         // Access YouTube search
-        request(url, (error, response, html) => {
-          // Check for errors
-          if (!error && response.statusCode === 200) {
-            json["parser"] = "json_format";
-            json["key"] = html.match(/"innertubeApiKey":"([^"]*)/)[1];
+        // request(url, (error, response, html) => {
+        //   // Check for errors
+        //   if (!error && response.statusCode === 200) {
+        //     json["parser"] = "json_format";
+        //     json["key"] = html.match(/"innertubeApiKey":"([^"]*)/)[1];
 
-            // Get script json data from html to parse
-            let data,
-              sectionLists = [];
-            try {
-              let match = html.match(/ytInitialData[^{]*(.*?);\s*<\/script>/s);
-              if (match && match.length > 1) {
-                json["parser"] += ".object_var";
-              } else {
-                json["parser"] += ".original";
-                match = html.match(
-                  /ytInitialData"[^{]*(.*);\s*window\["ytInitialPlayerResponse"\]/s
-                );
-              }
-              data = JSON.parse(match[1]);
-              json["estimatedResults"] = data.estimatedResults || "0";
-              sectionLists =
-                data.contents.twoColumnSearchResultsRenderer.primaryContents
-                  .sectionListRenderer.contents;
-            } catch (ex) {
-              console.error("Failed to parse data:", ex);
-              console.log(data);
-            }
+        //     // Get script json data from html to parse
+        //     let data,
+        //       sectionLists = [];
+        //     try {
+        //       let match = html.match(/ytInitialData[^{]*(.*?);\s*<\/script>/s);
+        //       if (match && match.length > 1) {
+        //         json["parser"] += ".object_var";
+        //       } else {
+        //         json["parser"] += ".original";
+        //         match = html.match(
+        //           /ytInitialData"[^{]*(.*);\s*window\["ytInitialPlayerResponse"\]/s
+        //         );
+        //       }
+        //       data = JSON.parse(match[1]);
+        //       json["estimatedResults"] = data.estimatedResults || "0";
+        //       sectionLists =
+        //         data.contents.twoColumnSearchResultsRenderer.primaryContents
+        //           .sectionListRenderer.contents;
+        //     } catch (ex) {
+        //       console.error("Failed to parse data:", ex);
+        //       console.log(data);
+        //     }
 
-            // Loop through all objects and parse data according to type
-            parseJsonFormat(sectionLists, json);
+        //     // Loop through all objects and parse data according to type
+        //     parseJsonFormat(sectionLists, json);
 
-            return resolve(json);
-          }
-          resolve({ error: error });
-        });
+        //     return resolve(json);
+        //   }
+        //   resolve({ error: error });
+        // });
       }
     });
   }

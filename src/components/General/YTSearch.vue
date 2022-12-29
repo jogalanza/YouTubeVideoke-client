@@ -30,18 +30,20 @@
       >
         <q-item :key="index" dense class="q-px-none">
           <q-item-section avatar>
-            <q-img
+            <!-- <q-img
               :src="item.snippet.thumbnails.medium.url"
               :width="item.snippet.thumbnails.medium.width"
               :height="item.snippet.thumbnails.medium.height"
               style="width: 140px"
-            ></q-img>
+            ></q-img> -->
+
+            <q-img :src="item.video.thumbnail_src" style="width: 140px"></q-img>
           </q-item-section>
           <q-item-section>
             <q-item-label>
-              #{{ index + 1 }} - {{ item.snippet.title }}
+              #{{ index + 1 }} - {{ item.video.title }}
             </q-item-label>
-            <q-item-label caption>{{ item.snippet.channelTitle }}</q-item-label>
+            <q-item-label caption>{{ item.uploader.username }}</q-item-label>
           </q-item-section>
           <q-item-section side>
             <q-btn
@@ -63,7 +65,7 @@
 <script>
 import { computed, defineComponent, inject, onMounted, ref, watch } from "vue";
 import { useMainStore } from "../../stores/main";
-//import { useYoutubeScrape } from "../../mixins/youtube-scrape";
+import { useYoutubeScrape } from "../../mixins/youtube-scrape";
 
 export default defineComponent({
   name: "YTSearch",
@@ -75,7 +77,7 @@ export default defineComponent({
     const api = inject("axios");
     const items = ref([]);
     const loading = ref(false);
-    //const { youtube } = useYoutubeScrape();
+    const { youtube } = useYoutubeScrape();
 
     const uri = computed(() => {
       if (!query.value) {
@@ -89,23 +91,28 @@ export default defineComponent({
     });
 
     const Search = async () => {
-      // await youtube(query.value || "videoke+latest+songs+with+lyrics").then(
-      //   (response) => {
-      //     console.warn("serach", response);
-      //   }
-      // );
-
       loading.value = true;
-      api
-        .get(uri.value)
+      await youtube(query.value || "videoke+latest+songs+with+lyrics")
         .then((response) => {
-          console.warn(response);
+          console.warn("serach", response, response.results);
           loading.value = false;
-          items.value = [...response.data.items];
+          items.value = [...response.results];
         })
         .catch(() => {
           loading.value = false;
         });
+
+      // loading.value = true;
+      // api
+      //   .get(uri.value)
+      //   .then((response) => {
+      //     console.warn(response);
+      //     loading.value = false;
+      //     items.value = [...response.data.items];
+      //   })
+      //   .catch(() => {
+      //     loading.value = false;
+      //   });
     };
 
     onMounted(() => {

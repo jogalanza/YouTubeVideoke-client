@@ -57,7 +57,7 @@ export const useMainStore = defineStore("main", {
       console.warn("playnext", this, this.playlist);
       try {
         var x = this.playlist.splice(0, 1);
-        this.activeVideo = x[0].id.videoId;
+        this.activeVideo = x[0].video.id; //  x[0].id.videoId;
         console.warn("playnext2", this.activeVideo);
       } catch {
         this.activeVideo = null;
