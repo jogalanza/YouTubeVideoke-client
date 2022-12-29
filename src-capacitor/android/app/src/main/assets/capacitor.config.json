@@ -1,10 +1,10 @@
 {
   "appId": "com.jogalanza.pettycash",
-  "appName": "Petty Cash",
+  "appName": "VideokeTube",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",
   "server": {
-    "url": "http://192.168.1.4:8080"
+    "url": "http://192.168.56.1:8080"
   }
 }

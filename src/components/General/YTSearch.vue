@@ -63,28 +63,29 @@
 </template>
 
 <script>
-import { computed, defineComponent, inject, onMounted, ref, watch } from "vue";
+import { defineComponent, inject, onMounted, ref, watch } from "vue";
 import { useMainStore } from "../../stores/main";
-import { useYoutubeScrape } from "../../mixins/youtube-scrape";
+//import { useYoutubeScrape } from "../../mixins/youtube-scrape";
+import axios from "axios";
 
 export default defineComponent({
   name: "YTSearch",
   emits: ["close"],
   setup(props, context) {
-    const key = ref("AIzaSyBam3KaApHnQwkQK8YlxdSGqCjSEL2omLo");
+    //const key = ref("AIzaSyBam3KaApHnQwkQK8YlxdSGqCjSEL2omLo");
     const mainStore = useMainStore();
     const query = ref(null);
     const api = inject("axios");
     const items = ref([]);
     const loading = ref(false);
-    const { youtube } = useYoutubeScrape();
+    //const { youtube } = useYoutubeScrape();
 
-    const uri = computed(() => {
-      if (!query.value) {
-        return `https://www.googleapis.com/youtube/v3/search?key=${key.value}&type=video&part=snippet&maxResults=20&q=videoke+latest+songs+with+lyrics`;
-      }
-      return `https://www.googleapis.com/youtube/v3/search?key=${key.value}&type=video&part=snippet&maxResults=20&q=${query.value}`;
-    });
+    // const uri = computed(() => {
+    //   if (!query.value) {
+    //     return `https://www.googleapis.com/youtube/v3/search?key=${key.value}&type=video&part=snippet&maxResults=20&q=videoke+latest+songs+with+lyrics`;
+    //   }
+    //   return `https://www.googleapis.com/youtube/v3/search?key=${key.value}&type=video&part=snippet&maxResults=20&q=${query.value}`;
+    // });
 
     watch(query, () => {
       Search();
@@ -92,15 +93,30 @@ export default defineComponent({
 
     const Search = async () => {
       loading.value = true;
-      await youtube(query.value || "videoke+latest+songs+with+lyrics")
+      axios
+        .get(
+          `https://jogalanza.com/yts/api/search/?q=${
+            query.value || "videoke+latest+songs+with+lyrics"
+          }`
+        )
         .then((response) => {
-          console.warn("serach", response, response.results);
           loading.value = false;
-          items.value = [...response.results];
+          items.value = [...response.data.results];
         })
         .catch(() => {
           loading.value = false;
         });
+
+      // loading.value = true;
+      // await youtube(query.value || "videoke+latest+songs+with+lyrics")
+      //   .then((response) => {
+      //     console.warn("serach", response, response.results);
+      //     loading.value = false;
+      //     items.value = [...response.results];
+      //   })
+      //   .catch(() => {
+      //     loading.value = false;
+      //   });
 
       // loading.value = true;
       // api
