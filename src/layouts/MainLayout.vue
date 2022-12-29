@@ -94,6 +94,12 @@
           color="white"
         >
           <q-tooltip>Song Queue</q-tooltip>
+          <q-badge
+            floating
+            rounded
+            color="red"
+            :label="mainStore.Playlist.length"
+          />
         </q-btn>
 
         <!-- <q-btn
